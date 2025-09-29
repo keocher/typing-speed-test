@@ -40,7 +40,7 @@ public class typingpseed {
 		
 		//variables
 		String[] input = new String[5];
-		long[] timeTaken = new long[5];
+		double[] timeTaken = new double[5];
 		Result results[] = new Result[5];
 		
 		//test loop
@@ -50,8 +50,8 @@ public class typingpseed {
 			long startTime = System.currentTimeMillis();
 			input[i] = scan.nextLine();
 			long endTime = System.currentTimeMillis();
-			timeTaken[i] = endTime - startTime;
-			results[i] = new Result((double)timeTaken[i]/1000, calculateWPM((double)timeTaken[i]/1000), calculateAccuracy(phrases[i], input[i]));
+			timeTaken[i] = (double)(endTime - startTime)/1000;
+			results[i] = new Result(timeTaken[i], calculateWPM(timeTaken[i]), calculateAccuracy(phrases[i], input[i]));
 			clearConsole();
 		}
 		
@@ -80,6 +80,14 @@ public class typingpseed {
 			System.out.println("----------------------******----------------------");
 		}
 		
+		//average
+		Result average = getAverage(results);
+		System.out.println("Average: ");
+		System.out.println("Time: " + String.format("%.2f", average.getTime())
+		 + " seconds");
+		System.out.println("WPM: " + average.getWpm());
+		System.out.println("Accuracy: " + average.getAccuracy() + "%");
+		System.out.println("----------------------******----------------------");
 		
 		
 	
@@ -105,6 +113,23 @@ public class typingpseed {
 			return accuracy;
 		}
 		
+		public static Result getAverage(Result[] results) {
+			double totalTime =0 ;
+			int totalWpm=0;
+			int totalAccuracy=0;
+			
+			for (int i=0;i<5;i++) {
+				totalTime += results[i].getTime();
+				totalWpm += results[i].getWpm();
+				totalAccuracy += results[i].getAccuracy();
+			}
+			
+			double avgTime = totalTime/5;
+			int avgWpm = totalWpm/5;
+			int avgAccuracy = totalAccuracy/5;
+			return new Result(avgTime, avgWpm, avgAccuracy);
+			
+		}
 		
 		
 		
