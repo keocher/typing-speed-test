@@ -2,8 +2,10 @@ package typingspeedtest;
 import java.util.Scanner;
 
 public class typingpseed {
-	 private static final Scanner scan = new Scanner(System.in);
+	//global scanner
+	private static final Scanner scan = new Scanner(System.in);
 	
+	//main method
 	public static void main (String[] args) {
 		
 		
@@ -18,13 +20,15 @@ public class typingpseed {
 		startTest();		
 		
 	}
+	
+	//method to clear console
 	public static void clearConsole() {
 	    for (int i = 0; i < 50; i++) {
 	        System.out.println();
 	    }
 	}
 
-	
+	//method to start the test
 	public static void startTest() {
 		String[] phrases = {
 				"please give me a job i will be so happy",
@@ -33,29 +37,58 @@ public class typingpseed {
 				"i dont mean that i just need ten word sentences",
 				"but i do mean the job part please please please"
 			};
+		
+		//variables
 		String[] input = new String[5];
 		long[] timeTaken = new long[5];
 		Result results[] = new Result[5];
 		
+		//test loop
 		for(int i=0;i<5;i++) {
-		System.out.println("Phrase " + (i+1) + ": " + phrases[i]);
-		System.out.println("----------------------******----------------------");
-		long startTime = System.currentTimeMillis();
-		input[i] = scan.nextLine();
-		long endTime = System.currentTimeMillis();
-		timeTaken[i] = endTime - startTime;
-		results[i] = new Result((double)timeTaken[i]/1000, calculateWPM(timeTaken[i]), calculateAccuracy(phrases[i], input[i]));
-		clearConsole();
+			System.out.println("Phrase " + (i+1) + ": " + phrases[i]);
+			System.out.println("----------------------******----------------------");
+			long startTime = System.currentTimeMillis();
+			input[i] = scan.nextLine();
+			long endTime = System.currentTimeMillis();
+			timeTaken[i] = endTime - startTime;
+			results[i] = new Result((double)timeTaken[i]/1000, calculateWPM((double)timeTaken[i]/1000), calculateAccuracy(phrases[i], input[i]));
+			clearConsole();
 		}
 		
-		System.out.println("TEST COMPLETE!");
+		//test complete message
+		String complete = "------------------TEST COMPLETE!------------------";char[] completeChars = complete.toCharArray();
+		for(int i=0;i<completeChars.length;i++) {
+		
+			try {
+				System.out.print(completeChars[i]);
+		        Thread.sleep(50); 
+		    } catch (InterruptedException e) {
+		        Thread.currentThread().interrupt();
+		    }
+		
+		}
+		clearConsole();
+		
+		//results
+		System.out.println("Here are your results:");
+		
+		for (int i=0;i<5;i++) {
+			System.out.println("Phrase " + (i+1) + ": ");
+			System.out.println("Time: " + String.format("%.2f", results[i].getTime()) + " seconds");
+			System.out.println("WPM: " + results[i].getWpm());
+			System.out.println("Accuracy: " + results[i].getAccuracy() + "%");
+			System.out.println("----------------------******----------------------");
+		}
+		
+		
 		
 	
 	}
 	
-		public static int calculateWPM(long time) {
-			int wpm = (int) (time/10000)*60;
-			return wpm;
+		public static int calculateWPM(double time) {
+			 int words = 10; // or count words dynamically
+			 double timeMinutes = time / 60.0;
+			 return (int) (words / timeMinutes);
 		}
 		
 		public static int calculateAccuracy(String phrase, String input) {
@@ -71,6 +104,10 @@ public class typingpseed {
 			int accuracy = (int) ((double)correctChars/phraseChars.length*100);
 			return accuracy;
 		}
+		
+		
+		
+		
 		
 		static class Result{
 			
