@@ -12,24 +12,18 @@ public class typingpseed {
 		System.out.println("----------------------Good Luck!----------------------");
 		System.out.println("");
 		
-		System.out.println("Press '.' to start");
-		if (scan.nextLine().equals(".")) {
-			clearConsole();
-			startTest();
-		}
-		
-		
-		
-		
-		
-		
-		
+		System.out.println("Press enter to start");
+		scan.nextLine();
+		clearConsole();
+		startTest();		
 		
 	}
 	public static void clearConsole() {
-	    System.out.print("\033[H\033[2J");
-	    System.out.flush();
+	    for (int i = 0; i < 50; i++) {
+	        System.out.println();
+	    }
 	}
+
 	
 	public static void startTest() {
 		String[] phrases = {
@@ -40,9 +34,26 @@ public class typingpseed {
 				"Thank you for your time"
 			};
 		String[] input = new String[5];
+		long[] timeTaken = new long[5];
 		
-		input[0] = scan.nextLine();
+		for(int i=0;i<5;i++) {
+		System.out.println("Phrase " + (i+1) + ": " + phrases[i]);
+		System.out.println("----------------------******----------------------");
+		long startTime = System.currentTimeMillis();
+		input[i] = scan.nextLine();
+		long endTime = System.currentTimeMillis();
+		timeTaken[i] = endTime - startTime;
+		clearConsole();
+		}
 		
-	}
+		for(int i=0;i<5;i++) {
+			System.out.println("Phrase " + (i+1) + ": " + phrases[i]);
+			System.out.println("You typed: " + input[i]);
+			System.out.println("Time taken: " + timeTaken[i]/1000.0 + " seconds");
+			System.out.println("----------------------******----------------------");
+		}
 	
+
+	
+	}
 }
